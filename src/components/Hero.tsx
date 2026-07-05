@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, FileText, ChevronDown, Terminal } from 'lucide-react';
+import { Mail, FileText, ChevronDown } from 'lucide-react';
 import { GithubIcon } from './icons';
 
 interface HeroProps {
