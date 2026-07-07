@@ -7,13 +7,17 @@ import { Timeline } from './components/Timeline';
 import { Contact } from './components/Contact';
 import { AgentPractice } from './components/AgentPractice';
 import { AIGCVideoAgentPreview } from './components/AIGCVideoAgentPreview';
-import { Sparkles, Menu, X } from 'lucide-react';
+import { AIProductImageAgentPreview } from './components/AIProductImageAgentPreview';
+import { RAGPreview } from './components/RAGPreview';
+import { Menu, X } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isVideoPreviewOpen, setIsVideoPreviewOpen] = useState(false);
+  const [isProductImagePreviewOpen, setIsProductImagePreviewOpen] = useState(false);
+  const [isRAGPreviewOpen, setIsRAGPreviewOpen] = useState(false);
 
   // Smooth scroll tracking to highlight active navbar item
   useEffect(() => {
@@ -59,10 +63,9 @@ function App() {
       </div>
 
       {/* Floating Glassmorphic Navbar */}
-      <div className="navbar-container" style={{ display: isPreviewOpen ? 'none' : 'block' }}>
+      <div className="navbar-container" style={{ display: (isVideoPreviewOpen || isProductImagePreviewOpen || isRAGPreviewOpen) ? 'none' : 'block' }}>
         <header className="glass-panel navbar">
           <div className="nav-logo cursor-pointer" onClick={() => scrollToSection('home')} style={{ cursor: 'pointer' }}>
-            <Sparkles size={20} className="text-gradient" />
             <span className="text-gradient">Jianwei Zhu.Resume</span>
           </div>
 
@@ -191,7 +194,11 @@ function App() {
         />
         <About />
         <Skills />
-        <Projects onOpenPreview={() => setIsPreviewOpen(true)} />
+        <Projects 
+          onOpenVideoPreview={() => setIsVideoPreviewOpen(true)} 
+          onOpenProductImagePreview={() => setIsProductImagePreviewOpen(true)} 
+          onOpenRAGPreview={() => setIsRAGPreviewOpen(true)}
+        />
         <AgentPractice />
         <Timeline />
         <Contact />
@@ -205,7 +212,9 @@ function App() {
       </footer>
 
       {/* Modal rendered at root level to prevent stacking context clipping */}
-      <AIGCVideoAgentPreview isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
+      <AIGCVideoAgentPreview isOpen={isVideoPreviewOpen} onClose={() => setIsVideoPreviewOpen(false)} />
+      <AIProductImageAgentPreview isOpen={isProductImagePreviewOpen} onClose={() => setIsProductImagePreviewOpen(false)} />
+      <RAGPreview isOpen={isRAGPreviewOpen} onClose={() => setIsRAGPreviewOpen(false)} />
     </>
   );
 }

@@ -13,15 +13,17 @@ interface Project {
 }
 
 interface ProjectsProps {
-  onOpenPreview: () => void;
+  onOpenVideoPreview: () => void;
+  onOpenProductImagePreview: () => void;
+  onOpenRAGPreview: () => void;
 }
 
-export const Projects: React.FC<ProjectsProps> = ({ onOpenPreview }) => {
+export const Projects: React.FC<ProjectsProps> = ({ onOpenVideoPreview, onOpenProductImagePreview, onOpenRAGPreview }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'design' | 'fullstack'>('all');
 
   const projects: Project[] = [
     {
-      title: 'AI口播视频功能微创新',
+      title: 'AI口播视频功能微创新（演示模式，本地可正常运行）',
       description: '紧密追踪爆火 AI 视觉效果主导竞品拆解，优化用户从“上传”到“生成”的前端交互路径，有效提升转化人效并降低流失率。',
       category: 'design',
       tags: ['竞品拆解', '路径优化', 'A/B 测试', '流失率优化'],
@@ -30,21 +32,21 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenPreview }) => {
       icon: <Compass className="project-icon-placeholder" />,
     },
     {
-      title: '广告账户多开自动巡检与报警脚本',
-      description: '重构投放团队痛点，基于 Spec coding 独立编写的自动化广告监控报警脚本，实现投放巡检人效 300% 提升。',
+      title: 'AI商品图与营销文案生成Agent',
+      description: '针对电商卖家设计的一体化 AI Agent 工作台，融合对话式生图、Konva画布编辑与ReAct文案生成，实现一键生成图文并茂的可上架电商素材。',
       category: 'fullstack',
-      tags: ['Spec coding', '自动化脚本', '多开巡检', '报警推送'],
+      tags: ['AI Agent', 'Konva画布', '多模态生成', '文案套件'],
       githubUrl: 'https://github.com/MagicalWei',
       liveUrl: 'https://example.com',
       icon: <Database className="project-icon-placeholder" />,
     },
     {
-      title: 'AI 多模态素材批量生产工具',
-      description: '深度对接视频团队，抽象设计并落地了“文案拆解 ➜ 角色图生成 ➜ 批量去水印 ➜ 自动混剪”的全链路数字化生成工具。',
+      title: '美食 RAG 智能问答与检索系统',
+      description: '基于 366 篇本地菜谱与 2025 个结构化分块，自主设计并实现了包含查询重写、意图自动路由、FAISS 向量检索、流式回答输出与调试器的闭环 RAG 问答平台。',
       category: 'fullstack',
-      tags: ['多模态生成', '工作流抽象', '短视频生产', '自动混剪'],
-      githubUrl: 'https://github.com/MagicalWei',
-      liveUrl: 'https://example.com',
+      tags: ['RAG 检索', 'FAISS 向量库', '意图路由', '查询重写'],
+      githubUrl: 'https://github.com/MagicalWei/RAG',
+      liveUrl: '#',
       icon: <Globe className="project-icon-placeholder" />,
     },
   ];
@@ -87,7 +89,16 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenPreview }) => {
             
             <div className="project-info">
               <h3 className="project-title" style={{ fontFamily: 'var(--font-header)', fontWeight: 700 }}>
-                {project.title}
+                {project.title.includes('（') ? (
+                  <>
+                    {project.title.split('（')[0]}
+                    <span style={{ fontSize: '0.75em', fontWeight: 500, color: 'var(--text-muted)', marginLeft: '4px' }}>
+                      （{project.title.split('（')[1]}
+                    </span>
+                  </>
+                ) : (
+                  project.title
+                )}
               </h3>
               <p className="project-desc">
                 {project.description}
@@ -106,9 +117,18 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenPreview }) => {
                   <GithubIcon width={16} height={16} />
                   <span>查看源码</span>
                 </a>
-                {project.title === 'AI口播视频功能微创新' ? (
+                {project.title === 'AI口播视频功能微创新（演示模式，本地可正常运行）' ? (
                   <button 
-                    onClick={onOpenPreview} 
+                    onClick={onOpenVideoPreview} 
+                    className="project-link"
+                    style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+                  >
+                    <ExternalLink size={16} />
+                    <span>在线预览</span>
+                  </button>
+                ) : project.title === 'AI商品图与营销文案生成Agent' ? (
+                  <button 
+                    onClick={onOpenProductImagePreview} 
                     className="project-link"
                     style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
                   >
@@ -116,10 +136,14 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenPreview }) => {
                     <span>在线预览</span>
                   </button>
                 ) : (
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link">
-                    <ExternalLink />
+                  <button 
+                    onClick={onOpenRAGPreview} 
+                    className="project-link"
+                    style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+                  >
+                    <ExternalLink size={16} />
                     <span>在线预览</span>
-                  </a>
+                  </button>
                 )}
               </div>
             </div>
